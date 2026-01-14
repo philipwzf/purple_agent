@@ -16,7 +16,7 @@ from executor import Executor
 def main():
     parser = argparse.ArgumentParser(description="Run the A2A agent.")
     parser.add_argument("--host", type=str, default="127.0.0.1", help="Host to bind the server")
-    parser.add_argument("--port", type=int, default=9009, help="Port to bind the server")
+    parser.add_argument("--port", type=int, default=9010, help="Port to bind the server")
     parser.add_argument("--card-url", type=str, help="URL to advertise in the agent card")
     args = parser.parse_args()
 
@@ -24,21 +24,37 @@ def main():
     # See: https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/
     
     skill = AgentSkill(
-        id="",
-        name="",
-        description="",
-        tags=[],
-        examples=[]
+        id="ai2thor_planner",
+        name="AI2-THOR action planner",
+        description=(
+            "Accepts trial metadata from a green agent and returns action lists "
+            "for each trial_id in JSON."
+        ),
+        tags=["planning", "ai2thor"],
+        examples=[
+            """
+{
+  "instructions": "Return a JSON dict mapping trial_id to a list of actions.",
+  "trials": [
+    {
+      "trial_id": "trial_1",
+      "goal_instruction": "Heat a bowl in the microwave.",
+      "metadata": {"agent": {"position": {"x": 1, "y": 0, "z": 1}}}
+    }
+  ]
+}
+""".strip()
+        ],
     )
 
     agent_card = AgentCard(
-        name="",
-        description="",
+        name="Purple AI2-THOR Agent",
+        description="Generates action lists for AI2-THOR trials from scene metadata.",
         url=args.card_url or f"http://{args.host}:{args.port}/",
         version='1.0.0',
         default_input_modes=['text'],
         default_output_modes=['text'],
-        capabilities=AgentCapabilities(streaming=True),
+        capabilities=AgentCapabilities(streaming=False),
         skills=[skill]
     )
 
