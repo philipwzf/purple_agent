@@ -66,12 +66,6 @@ class Agent:
             "Authorization": f"Bearer {OPENROUTER_API_KEY}",
             "Content-Type": "application/json",
         }
-        referer = os.getenv("OPENROUTER_REFERER")
-        title = os.getenv("OPENROUTER_APP_NAME")
-        if referer:
-            headers["HTTP-Referer"] = referer
-        if title:
-            headers["X-Title"] = title
 
         async with httpx.AsyncClient(timeout=REQUEST_TIMEOUT) as client:
             response = await client.post(OPENROUTER_URL, json=payload, headers=headers)

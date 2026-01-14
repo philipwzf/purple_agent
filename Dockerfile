@@ -1,4 +1,6 @@
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm
+FROM ghcr.io/astral-sh/uv:python3.11-bookworm
+
+ENV OPENROUTER_MODEL=deepseek/deepseek-chat
 
 RUN adduser agent
 USER agent
@@ -12,5 +14,5 @@ RUN \
     uv sync --locked
 
 ENTRYPOINT ["uv", "run", "src/server.py"]
-CMD ["--host", "0.0.0.0"]
-EXPOSE 9009
+CMD ["--host", "0.0.0.0", "--port", "9010"]
+EXPOSE 9010

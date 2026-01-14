@@ -1,6 +1,6 @@
-# A2A Agent Template
+# Purple A2A Agent
 
-A minimal template for building [A2A (Agent-to-Agent)](https://a2a-protocol.org/latest/) agents.
+Purple agent for generating AI2-THOR action lists from green-agent trial payloads.
 
 ## Project Structure
 
@@ -19,17 +19,12 @@ pyproject.toml    # Python dependencies
    └─ test-and-publish.yml # CI workflow
 ```
 
-## Getting Started
+## Configuration
 
-1. **Create your repository** - Click "Use this template" to create your own repository from this template
+This agent uses OpenRouter for planning. Set:
 
-2. **Implement your agent** - Add your agent logic to [`src/agent.py`](src/agent.py)
-
-3. **Configure your agent card** - Fill in your agent's metadata (name, skills, description) in [`src/server.py`](src/server.py)
-
-4. **Write your tests** - Add custom tests for your agent in [`tests/test_agent.py`](tests/test_agent.py)
-
-For a concrete example of implementing an agent using this template, see this [draft PR](https://github.com/RDI-Foundation/agent-template/pull/8).
+- `OPENROUTER_API_KEY` (or `API_KEY`)
+- `OPENROUTER_MODEL` (default: `deepseek/deepseek-chat`)
 
 ## Running Locally
 
@@ -37,8 +32,8 @@ For a concrete example of implementing an agent using this template, see this [d
 # Install dependencies
 uv sync
 
-# Run the server
-uv run src/server.py
+# Run the server (default port 9010)
+uv run src/server.py --port 9010
 ```
 
 ## Running with Docker
@@ -48,7 +43,7 @@ uv run src/server.py
 docker build -t my-agent .
 
 # Run the container
-docker run -p 9009:9009 my-agent
+docker run -p 9010:9010 my-agent
 ```
 
 ## Testing
@@ -62,7 +57,7 @@ uv sync --extra test
 # Start your agent (uv or docker; see above)
 
 # Run tests against your running agent URL
-uv run pytest --agent-url http://localhost:9009
+uv run pytest tests --agent-url http://localhost:9010
 ```
 
 ## Publishing
